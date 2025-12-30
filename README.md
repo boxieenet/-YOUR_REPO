@@ -37,3 +37,26 @@ Interpretation:
 Next steps:
 - If `gcc` is missing, install a C toolchain (MinGW on Windows, build-essential on Debian/Ubuntu, Xcode command line tools on macOS).
 - If `code` (VS Code CLI) is missing but VS Code is installed, enable the `code` command from the Command Palette (`Shell Command: Install 'code' command in PATH`).
+
+Interview Notes
+---------------
+This repository contains a compact, single-file embedded systems demo designed for quick review in interviews. Use these talking points when presenting the project:
+
+- Purpose: simulate a simple sensor -> controller -> actuator pipeline with realistic concerns (noise, filtering, mapping, and message integrity).
+- Signal conditioning: `movavg_t` implements a moving-average filter — discuss latency vs smoothing trade-offs and how you'd improve it (e.g., exponential filter, FIR window tuning).
+- Actuation mapping: `adc_to_duty()` shows domain conversion; mention calibration and deadband handling in real hardware.
+- Robustness: `crc8()` demonstrates a small integrity check; discuss why CRCs are preferred over simple checksums and where you'd apply them in telemetry.
+- Diagnostics: the `ring_log_t` is a lightweight on-device circular buffer — useful for post-mortem debug when storage is limited.
+- Extendability: explain how you'd replace simulation with real ADC reads, hook PWM registers, or add RTOS tasks.
+
+How to present during an interview
+-------------------------------
+- Briefly explain the architecture (sensor -> filter -> mapping -> actuator).
+- Walk through a few key functions (`simulate_adc`, `movavg_push`, `adc_to_duty`, `crc8`).
+- Run the binary to show output and point to the ring buffer sample lines in the `Recent log` section.
+- Discuss improvements you would implement for production (unit tests, static analysis, CI build, hardware-in-the-loop tests).
+
+Links
+-----
+- Build locally: See above for `gcc` commands.
+
